@@ -113,7 +113,7 @@ class Page1(Page):
                 axisDict['domain']=[int(vLo),int(vHi)]
             elif axisDict['dataType']=="quality":
                 cats=st.selectbox('number of categories',[x for x in range(1,11,1)])
-                axisDict['domain']=[pageDict['faker'].first_name() for x in range(0,cats,1)]
+                axisDict['domain']=[pageDict['properties']['faker'].first_name() for x in range(0,cats,1)]
             else:
                 st.write("Don't know what to do with",axisDict['dataType'])
 
