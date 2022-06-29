@@ -8,6 +8,7 @@ from faker import Faker
 from random import uniform, choice, randint
 import ast
 import csv
+import copy
 ### PDB stuff
 import core.stInfrastructure as infra
 import commonCode.StreamlitTricks as stTrx
@@ -57,7 +58,7 @@ infoList=["  * Data Visualisation tester",
 ### main part
 #####################
 
-class Page7(Page):
+class Page1(Page):
     def __init__(self):
         super().__init__("DataViser", ":microscope: Sketch a Plot", infoList)
 
@@ -67,37 +68,20 @@ class Page7(Page):
         ### getting attribute
         pageDict=st.session_state[self.name]
 
-        ### check requirements to do stuff
-        # doWork=False
-        # try:
-        #     if st.session_state.myClient:
-        #         doWork=True
-        #     if st.session_state.debug:
-        #         st.write(":white_check_mark: Got Token")
-        # except AttributeError:
-        #     st.write("No token")
-        #
-        # ### gatekeeping
-        # if not doWork:
-        #     st.stop()
-
-
         ### set up lists
         popList=[1,10,100,1000]
         dataTypeList=['quantity','quality']
         dataTypeMap={'quantity':"Q",'quality':"N"}
 
         ### set up defaults
-        defDict={'faker':Faker(),'population':100}
+        defDict={'faker':Faker(),'population':100,'chartType':"scatter"}
         stTrx.DebugOutput("Defaults",defDict)
-        for k,v in defDict.items():
-            pageDict[k]= v
+        if 'properties' not in pageDict.keys():
+            pageDict['properties']= copy.deepcopy(defDict)
 
 
         ### selections
         st.write("## Basic Properties")
-        if 'properties' not in pageDict.keys():
-            pageDict['properties']={'faker':Faker()}
 
         chartTypeList=['bar','scatter','line','area','rect','tick']
         infra.SelectBox(pageDict['properties'],'chartType',chartTypeList,"Select chart Type")
