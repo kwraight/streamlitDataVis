@@ -1,15 +1,14 @@
 # base image
-FROM kwraight/itk-multi-app:cern
+FROM kwraight/multitemplate-app:cern
 
 # exposing default port for streamlit
 # EXPOSE 8501 # (already in base image)
 
-# copying new pages over
-USER root
+# set up pages
+#COPY core/*.py ./core/
 RUN rm -rf ./userPages/theme*
 
 COPY commonCode/* ./commonCode/
-
 COPY dataVisApp/userPages/* ./userPages/dataVisApp/
 
 
@@ -17,6 +16,8 @@ COPY dataVisApp/userPages/* ./userPages/dataVisApp/
 COPY mainFiles/mainAppVis.py ./mainApp.py
 RUN sed -i 's/BUILDDATE/'$(date +%d-%m-%y)'/g' mainApp.py
 COPY requirements.txt ./requirements.txt
+# python packages
+USER root
 RUN pip3 install -r requirements.txt
 
 # # temp files image
