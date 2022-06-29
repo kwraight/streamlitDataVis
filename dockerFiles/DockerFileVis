@@ -8,7 +8,7 @@ FROM kwraight/multitemplate-app:cern
 #COPY core/*.py ./core/
 RUN rm -rf ./userPages/theme*
 
-COPY commonCode/* ./commonCode/
+COPY commonCode/*.py ./commonCode/
 COPY dataVisApp/userPages/* ./userPages/dataVisApp/
 
 
