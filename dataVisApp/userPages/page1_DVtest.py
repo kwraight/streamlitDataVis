@@ -51,22 +51,27 @@ def GenerateData(properties,dataList):
         dataSet.append(valDict)
     return dataSet
 
-infoList=["  * Data Visualisation tester",
-        "   * Currently only supporting _Altair_",
-        "   * minimum X & Y data required"]
+infoList=["### Instructions",
+        " __NB__ Currently only supporting [_Altair_](https://altair-viz.github.io)",
+        "  1. Select _chart type_ and _population_ (number of entries)",
+        "  2. Input _channels_ (types of information) - _X_ & _Y_ required",
+        "  3. Generate data (based on _channel_ inputs)",
+        "  4. Plot data"]
 #####################
 ### main part
 #####################
 
 class Page1(Page):
     def __init__(self):
-        super().__init__("DataViser", ":microscope: Sketch a Plot", infoList)
+        super().__init__("DataViser", ":microscope: Data Visualisation Tester", infoList)
 
     def main(self):
         super().main()
 
         ### getting attribute
         pageDict=st.session_state[self.name]
+
+        [st.write(x) for x in infoList]
 
         ### set up lists
         popList=[1,10,100,1000]
@@ -81,7 +86,7 @@ class Page1(Page):
 
 
         ### selections
-        st.write("## Basic Properties")
+        st.write("## 1. Basic Properties")
 
         chartTypeList=['bar','scatter','line','area','rect','tick']
         infra.SelectBox(pageDict['properties'],'chartType',chartTypeList,"Select chart Type")
@@ -90,7 +95,7 @@ class Page1(Page):
 
 
         ### axes
-        st.write("### Define Axes")
+        st.write("### 2. Define Channels")
         if 'axes' not in pageDict.keys():
             pageDict['axes']=[]
         infra.ToggleButton(pageDict,'togDefAxis','Define Axis?')
@@ -128,7 +133,7 @@ class Page1(Page):
                 st.write("no",a,"axis defined")
                 st.stop()
 
-        stTrx.DebugOutput(pageDict['axes'])
+        stTrx.DebugOutput("axisDict:",pageDict['axes'])
 
         infra.ToggleButton(pageDict,'togDrop',"Drop axis?")
         if pageDict['togDrop']:
@@ -138,7 +143,7 @@ class Page1(Page):
                 pageDict['axes'].remove(next(item for item in pageDict['axes'] if item['name'] == dropName))
 
 
-        st.write("## Generate Data")
+        st.write("## 3. Generate Data")
 
         st.write("Ready to generate:")
 
@@ -165,10 +170,10 @@ class Page1(Page):
         #         df_data[x['name']]=df_data[x['name']].astype(str)
 
         st.dataframe(df_data)
-        st.write("columns:",df_data.columns)
+        stTrx.DebugOutput("columns:",df_data.columns)
 
 
-        st.write("## Plot Data")
+        st.write("## 4. Plot Data")
         st.write("Ready to plot:",pageDict['properties']['chartType'])
         # st.write(" - for",next(item for item in pageDict['axes'] if item['axisType'] == "Y")['name'])
         # st.write(" - with",next(item for item in pageDict['axes'] if item['axisType'] == "X")['name'])
@@ -181,7 +186,7 @@ class Page1(Page):
             axStr=x['name']+":"+dataTypeMap[x['dataType']]
             tipList.append(axStr)
             setList.append(featureDict[x['axisType']](axStr))
-        st.write("tips:",tipList)
+        stTrx.DebugOutput("tooltips:",tipList)
 
         if 'plotd' not in pageDict.keys():
             pageDict['plotd']=False
