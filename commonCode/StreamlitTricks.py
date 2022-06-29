@@ -9,9 +9,7 @@ import json
 from datetime import datetime
 import altair as alt
 ### PDB stuff
-import core.DBaccess as DBaccess
 import core.stInfrastructure as infra
-import itkdb.exceptions as itkX
 
 
 #####################
